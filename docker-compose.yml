@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    ports:
+      - "8080:80"
+    volumes:
+      - /home/codingstudio/Project/testdocker:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+      MYSQL_ROOT_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - /home/codingstudio/database:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: my_password
+
+volumes:
+  db_data:
